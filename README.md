@@ -1,9 +1,23 @@
-This bookmarklet should remove reddit posts that have less than 10 upvotes.
+# Bookmarklets and Tampermonkey userscripts
 
+This repo has my scripts to sites that I have wanted to have some new features.
+All scripts should work as either a bookmarklet or a Tampermonkey userscript.
 
-Minified using npm command-line tool uglify-js
+## Remove scripts
 
-command: uglifyjs --compress --mangle -o min.js -- removeLowScore.js
+All of these are meant for reddit.com.
 
-Paste this to bookmark:
-javascript:(function(){for(var e=document.querySelectorAll("._1rZYMD_4xY3gRcSS3p8ODO"),n=0,t=e.length;n<t;n++)if(parseInt(e[n].innerHTML)<10){var r=e[n].parentElement.parentElement.parentElement.parentElement.parentElement;r.parentElement.removeChild(r)}}());
+removeFromAll.js: Makes filtering /r/all subreddits a little bit easier by
+changing subreddit link default functionality to my custom function.
+
+removeLowScore.js: This is not that useful script but it will remove reddit
+posts that have too low score.
+
+## Get current time
+
+This script is just for my work. It helps to keep track of time during the work
+day when I'm jumping between projects. The script will show as for now only how
+much time I have used the current day, but I would like to expand it more.
+
+This script doesn't work straight away because it is missing some information
+for a reason.
