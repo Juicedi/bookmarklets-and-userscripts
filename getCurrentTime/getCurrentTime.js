@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   const userId = '';
-  const apiUrl = '';
+  let apiUrl = '';
   let timeoutTimes = 0, timeElem = null, today = '', url = '';
   const TIMEOUTLIMIT = 20;
   let xhttp = new XMLHttpRequest();
