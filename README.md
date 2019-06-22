@@ -3,6 +3,7 @@
 This repo has my scripts to sites that I have wanted to have some new features.
 All scripts should work as either a bookmarklet or a Tampermonkey userscript.
 
+---
 ## Reddit scripts
 
 ### removeFromAll.js
@@ -15,6 +16,7 @@ changing subreddit link default functionality to my custom function.
 This is not that useful script but it will remove reddit
 posts that have too low score.
 
+---
 ## Work script
 
 ### getCurrentTime.js
