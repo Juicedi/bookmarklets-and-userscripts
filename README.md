@@ -3,17 +3,21 @@
 This repo has my scripts to sites that I have wanted to have some new features.
 All scripts should work as either a bookmarklet or a Tampermonkey userscript.
 
-## Remove scripts
+## Reddit scripts
 
-All of these are meant for reddit.com.
+### removeFromAll.js
 
-removeFromAll.js: Makes filtering /r/all subreddits a little bit easier by
+Makes filtering /r/all subreddits a little bit easier by
 changing subreddit link default functionality to my custom function.
 
-removeLowScore.js: This is not that useful script but it will remove reddit
+### removeLowScore.js
+
+This is not that useful script but it will remove reddit
 posts that have too low score.
 
-## Get current time
+## Work script
+
+### getCurrentTime.js
 
 This script is just for my work. It helps to keep track of time during the work
 day when I'm jumping between projects. The script will show as for now only how
