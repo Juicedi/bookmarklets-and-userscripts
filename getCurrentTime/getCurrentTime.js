@@ -61,6 +61,6 @@
     + '&onlyStarredProjects=false&includeArchivedProjects=false'
     + '&matchAllTags=true&projectStatus=all';
   xhttp.onreadystatechange = showResponse;
-  xhttp.open("GET", url, true);
+  xhttp.open("GET", apiUrl, true);
   xhttp.send();
 }());
