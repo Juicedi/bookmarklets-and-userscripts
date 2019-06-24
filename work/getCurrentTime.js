@@ -6,6 +6,11 @@
   const TIMEOUTLIMIT = 20;
   let xhttp = new XMLHttpRequest();
 
+  function sendRequest() {
+    xhttp.open("GET", apiUrl, true);
+    xhttp.send();
+  }
+
   function formatDate(date) {
     var d = new Date(date), month = '' + (d.getMonth() + 1), day = '' + d.getDate(), year = d.getFullYear();
     if (month.length < 2) month = '0' + month;
@@ -15,7 +20,7 @@
 
   function createTimeElem() {
     timeElem = document.createElement('DIV');
-    timeElem.style.position = 'fixed';
+    timeElem.style.position = 'absolute';
     timeElem.style.color = '#DC7391';
     timeElem.style.backgroundColor = '#B4526E';
     timeElem.style.borderRadius = '3px';
@@ -24,6 +29,9 @@
     timeElem.style.left = '50%';
     timeElem.style.padding = '0px 5px';
     timeElem.style.transform = 'translateX(-50%)';
+    timeElem.style.cursor = 'pointer';
+    timeElem.title = "Double click to reload the data";
+    timeElem.addEventListener('dblclick', sendRequest);
     document.body.appendChild(timeElem);
   }
 
@@ -61,6 +69,5 @@
     + '&onlyStarredProjects=false&includeArchivedProjects=false'
     + '&matchAllTags=true&projectStatus=all';
   xhttp.onreadystatechange = showResponse;
-  xhttp.open("GET", apiUrl, true);
-  xhttp.send();
+  sendRequest();
 }());
