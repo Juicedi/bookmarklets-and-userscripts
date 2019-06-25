@@ -15,13 +15,13 @@
 
   function sendRequest() {
     today = formatDate(Date.now());
-    apiUrl += '?page=1&pageSize=100&getTotals=true&projectId=&companyId=0'
+    url = apiUrl + '?page=1&pageSize=100&getTotals=true&projectId=&companyId=0'
       + '&userId=' + userId + '&invoicedType=all&billableType=all'
       + '&fromDate=' + today + '&toDate=' + today
       + '&sortBy=date&sortOrder=desc'
       + '&onlyStarredProjects=false&includeArchivedProjects=false'
       + '&matchAllTags=true&projectStatus=all';
-    xhttp.open("GET", apiUrl, true);
+    xhttp.open("GET", url, true);
     xhttp.send();
   }
 
