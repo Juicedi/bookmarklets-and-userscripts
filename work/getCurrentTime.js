@@ -6,16 +6,23 @@
   const TIMEOUTLIMIT = 20;
   let xhttp = new XMLHttpRequest();
 
-  function sendRequest() {
-    xhttp.open("GET", apiUrl, true);
-    xhttp.send();
-  }
-
   function formatDate(date) {
     var d = new Date(date), month = '' + (d.getMonth() + 1), day = '' + d.getDate(), year = d.getFullYear();
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
     return [year, month, day].join('');
+  }
+
+  function sendRequest() {
+    today = formatDate(Date.now());
+    apiUrl += '?page=1&pageSize=100&getTotals=true&projectId=&companyId=0'
+      + '&userId=' + userId + '&invoicedType=all&billableType=all'
+      + '&fromDate=' + today + '&toDate=' + today
+      + '&sortBy=date&sortOrder=desc'
+      + '&onlyStarredProjects=false&includeArchivedProjects=false'
+      + '&matchAllTags=true&projectStatus=all';
+    xhttp.open("GET", apiUrl, true);
+    xhttp.send();
   }
 
   function createTimeElem() {
@@ -61,13 +68,6 @@
     }
   }
 
-  today = formatDate(Date.now());
-  apiUrl += '?page=1&pageSize=100&getTotals=true&projectId=&companyId=0'
-    + '&userId=' + userId + '&invoicedType=all&billableType=all'
-    + '&fromDate=' + today + '&toDate=' + today
-    + '&sortBy=date&sortOrder=desc'
-    + '&onlyStarredProjects=false&includeArchivedProjects=false'
-    + '&matchAllTags=true&projectStatus=all';
   xhttp.onreadystatechange = showResponse;
   sendRequest();
 }());
