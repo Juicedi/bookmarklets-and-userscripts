@@ -13,9 +13,21 @@
     return [year, month, day].join('');
   }
 
+  function sendRequest() {
+    today = formatDate(Date.now());
+    url = apiUrl + '?page=1&pageSize=100&getTotals=true&projectId=&companyId=0'
+      + '&userId=' + userId + '&invoicedType=all&billableType=all'
+      + '&fromDate=' + today + '&toDate=' + today
+      + '&sortBy=date&sortOrder=desc'
+      + '&onlyStarredProjects=false&includeArchivedProjects=false'
+      + '&matchAllTags=true&projectStatus=all';
+    xhttp.open("GET", url, true);
+    xhttp.send();
+  }
+
   function createTimeElem() {
     timeElem = document.createElement('DIV');
-    timeElem.style.position = 'fixed';
+    timeElem.style.position = 'absolute';
     timeElem.style.color = '#DC7391';
     timeElem.style.backgroundColor = '#B4526E';
     timeElem.style.borderRadius = '3px';
@@ -24,6 +36,9 @@
     timeElem.style.left = '50%';
     timeElem.style.padding = '0px 5px';
     timeElem.style.transform = 'translateX(-50%)';
+    timeElem.style.cursor = 'pointer';
+    timeElem.title = "Double click to reload the data";
+    timeElem.addEventListener('dblclick', sendRequest);
     document.body.appendChild(timeElem);
   }
 
@@ -53,14 +68,6 @@
     }
   }
 
-  today = formatDate(Date.now());
-  apiUrl += '?page=1&pageSize=100&getTotals=true&projectId=&companyId=0'
-    + '&userId=' + userId + '&invoicedType=all&billableType=all'
-    + '&fromDate=' + today + '&toDate=' + today
-    + '&sortBy=date&sortOrder=desc'
-    + '&onlyStarredProjects=false&includeArchivedProjects=false'
-    + '&matchAllTags=true&projectStatus=all';
   xhttp.onreadystatechange = showResponse;
-  xhttp.open("GET", apiUrl, true);
-  xhttp.send();
+  sendRequest();
 }());
