@@ -1,0 +1,28 @@
+{
+  "name": "bookmarklets-and-userscripts",
+  "version": "1.0.0",
+  "description": "Bunch of userscripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juicedi/bookmarklets-and-userscripts.git"
+  },
+  "keywords": [
+    "userscripts",
+    "bookmarklets"
+  ],
+  "author": "Jussi Latvaniemi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juicedi/bookmarklets-and-userscripts/issues"
+  },
+  "homepage": "https://github.com/Juicedi/bookmarklets-and-userscripts#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.2"
+  }
+}
