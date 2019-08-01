@@ -30,10 +30,7 @@
 
     const hideButton = area.parentElement.querySelector('.link-save-button')
       .nextSibling.querySelector('a');
-
-    if (area.selected) {
-      change_state(hideButton, 'hide', hide_thing);
-    }
+    change_state(hideButton, 'hide', hide_thing);
   }
 
   function selectHoverableArea() {
@@ -80,11 +77,26 @@
   });
 
   document.addEventListener('keyup', (e) => {
-    if (e.key === 'Control') {
-      areas.forEach((area) => {
-        hideSelectedPost(area);
-        hideHoverElements(area);
-      });
-    }
+    if (e.key !== 'Control') return;
+
+    let splices = 0;
+
+    areas.forEach((area, index) => {
+      if (area.selected) {
+        setTimeout(() => {
+
+          /*
+           * Splicing hover area from the areas array and passing it
+           * to the hiding function and adjusting the index after
+           * async remove.
+           */
+
+          hideSelectedPost(areas.splice(index - splices, 1)[0]);
+          splices++;
+        }, 400 * index);
+      }
+
+      hideHoverElements(area);
+    });
   });
 }(change_state, hide_thing));
