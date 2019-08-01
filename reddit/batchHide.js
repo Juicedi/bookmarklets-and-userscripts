@@ -80,6 +80,7 @@
     if (e.key !== 'Control') return;
 
     let splices = 0;
+    let removed = 0;
 
     areas.forEach((area, index) => {
       if (area.selected) {
@@ -93,7 +94,8 @@
 
           hideSelectedPost(areas.splice(index - splices, 1)[0]);
           splices++;
-        }, 400 * index);
+        }, 400 * removed);
+        removed++;
       }
 
       hideHoverElements(area);
