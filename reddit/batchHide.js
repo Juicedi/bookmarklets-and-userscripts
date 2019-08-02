@@ -11,16 +11,6 @@
   const posts = document.querySelectorAll('.thing');
   const areas = [];
 
-  function showHoverElements() {
-    areas.forEach((area) => {
-      area.style.display = 'block';
-    });
-  }
-
-  function hideHoverElements(area) {
-    area.style.display = 'none';
-  }
-
   function hideSelectedPost(area) {
 
     /*
@@ -51,32 +41,7 @@
     }
   }
 
-  // Check if hiding functions are available
-  if (typeof change_state !== 'function') return;
-  if (typeof hide_thing !== 'function') return;
-
-  posts.forEach((post) => {
-    const hideArea = document.createElement('DIV');
-    hideArea.style.display = 'none';
-    hideArea.style.position = 'absolute';
-    hideArea.style.backgroundColor = 'red';
-    hideArea.style.left = '0px';
-    hideArea.style.top = '0px';
-    hideArea.style.height = '50px';
-    hideArea.style.width = '50px';
-    hideArea.addEventListener('mouseenter', toggleSelection);
-
-    post.style.position = 'relative';
-    post.append(hideArea);
-
-    areas.push(hideArea);
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Control') showHoverElements();
-  });
-
-  document.addEventListener('keyup', (e) => {
+  function hoverToggleKeyUp(e) {
     if (e.key !== 'Control') return;
 
     let splices = 0;
@@ -98,7 +63,39 @@
         removed++;
       }
 
-      hideHoverElements(area);
+      area.style.display = 'none'; 
     });
+  }
+
+  function hoverToggleKeyDown(e) {
+    if (e.key === 'Control') {
+      areas.forEach((area) => {
+        area.style.display = 'block'; 
+      });
+    }
+  }
+
+  // Check if hiding functions are available
+  if (typeof change_state !== 'function') return;
+  if (typeof hide_thing !== 'function') return;
+
+  posts.forEach((post) => {
+    const hideArea = document.createElement('DIV');
+    hideArea.style.display = 'none';
+    hideArea.style.position = 'absolute';
+    hideArea.style.backgroundColor = 'red';
+    hideArea.style.left = '0px';
+    hideArea.style.top = '0px';
+    hideArea.style.height = '50px';
+    hideArea.style.width = '100px';
+    hideArea.addEventListener('mouseenter', toggleSelection);
+
+    post.style.position = 'relative';
+    post.append(hideArea);
+
+    areas.push(hideArea);
   });
+
+  document.addEventListener('keydown', hoverToggleKeyDown);
+  document.addEventListener('keyup', hoverToggleKeyUp);
 }(change_state, hide_thing));
