@@ -16,6 +16,14 @@ changing subreddit link default functionality to my custom function.
 This is not that useful script but it will remove reddit
 posts that have too low score.
 
+### batchHide.js
+
+This script adds all posts a hoverable area which will mark
+the post to be removed when the user lifts the control key.
+
+The hover areas will only be visible when user presses the Control
+key.
+
 ---
 ## Work script
 
