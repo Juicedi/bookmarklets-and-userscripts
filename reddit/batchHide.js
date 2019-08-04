@@ -23,21 +23,13 @@
     change_state(hideButton, 'hide', hide_thing);
   }
 
-  function selectHoverableArea() {
-    this.style.backgroundColor = 'green';
-  }
-
-  function deselectHoverableArea() {
-    this.style.backgroundColor = 'red';
-  }
-
   function toggleSelection() {
     if (this.selected) {
       this.selected = false;
-      deselectHoverableArea.call(this);
-    } else { 
+      this.style.backgroundColor = 'red';
+    } else {
       this.selected = true;
-      selectHoverableArea.call(this);
+      this.style.backgroundColor = 'green';
     }
   }
 
