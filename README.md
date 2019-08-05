@@ -24,6 +24,11 @@ the post to be removed when the user lifts the control key.
 The hover areas will only be visible when user presses the Control
 key.
 
+### hideCommentTree.js
+
+Script creates clickable areas on top of the comments that can be clicked to
+hide the comment tree.
+
 ---
 ## Work script
 
