@@ -4,11 +4,11 @@
 
   function toggleCollapse (comment) {
     if (comment.classList.value.indexOf('collapsed') > -1) {
-      comment.classList.remove('non-collapsed');
+      comment.classList.remove('noncollapsed');
       comment.classList.add('collapsed');
     } else {
       comment.classList.remove('collapsed');
-      comment.classList.add('non-collapsed');
+      comment.classList.add('noncollapsed');
     }
   }
 
