@@ -1,7 +1,7 @@
 (function() {
   'use strict';
-  const userId = '';
-  let apiUrl = '';
+  const userId = ''; // FIXME: Fill in correct user ID
+  let apiUrl = '';   // FIXME: Fill in correct API URL
   let timeoutTimes = 0, timeElem = null, today = '', url = '';
   const TIMEOUTLIMIT = 20;
   let xhttp = new XMLHttpRequest();
