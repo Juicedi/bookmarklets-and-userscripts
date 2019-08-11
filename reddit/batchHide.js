@@ -8,6 +8,7 @@
  */
 
 (function batchHide(change_state, hide_thing) {
+  const side = document.querySelector('.side');
   const posts = document.querySelectorAll('.thing');
   const areas = [];
 
@@ -90,4 +91,8 @@
 
   document.addEventListener('keydown', hoverToggleKeyDown);
   document.addEventListener('keyup', hoverToggleKeyUp);
+
+  // Move the side panel on top of the posts, so it can be used normally
+  side.style.position = 'relative';
+  side.style.zIndex = '21';
 }(change_state, hide_thing));
