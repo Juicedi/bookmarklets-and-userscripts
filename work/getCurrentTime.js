@@ -50,7 +50,7 @@
     xhttp.send();
   }
 
-  function createTimeElem(eventHandler, formattedText) {
+  function createTimeElem(formattedText) {
     const element = document.createElement('DIV');
     const txt = formattedText.trim().toLowerCase().replace(':', '').toString();
     element.style.display = 'inline-block';
@@ -62,7 +62,6 @@
     element.style.cursor = 'pointer';
     element.classList.add(`time-combined--${txt}`);
     element.title = 'Double click to reload the data';
-    element.addEventListener('dblclick', eventHandler);
     return element;
   }
 
@@ -74,8 +73,16 @@
   container.style.transform = 'translateX(-50%)';
   document.body.appendChild(container);
 
-  todayTimeElement = createTimeElem(getTimeRange.bind(null, today, today), todayText);
-  weeksTimeElement = createTimeElem(getTimeRange.bind(null, weekStart, today), weekText);
+  todayTimeElement = createTimeElem(todayText);
+  todayTimeElement.addEventListener(
+    'dblclick', getTimeRange.bind(null, today, today),
+  );
+
+  weeksTimeElement = createTimeElem(weekText);
+  weeksTimeElement.addEventListener(
+    'dblclick', getTimeRange.bind(null, weekStart, today),
+  );
+
   container.appendChild(todayTimeElement);
   container.appendChild(weeksTimeElement);
   getTimeRange(todayText, todayTimeElement, today, today);
