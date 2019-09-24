@@ -3,7 +3,8 @@
   // let apiUrl = '';   // FIXME: Fill in correct API URL
   const container = document.createElement('DIV');
   const today = Date.now();
-  const weekStart = today - new Date().getDay();
+  const dayInMilliSeconds = 86400000;
+  const weekStart = today - (dayInMilliSeconds * new Date().getDay());
   const todayText = 'Today: ';
   const weekText = 'Week: ';
   let todayTimeElement = null;
