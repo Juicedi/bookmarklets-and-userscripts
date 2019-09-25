@@ -76,12 +76,12 @@
 
   todayTimeElement = createTimeElem(todayText);
   todayTimeElement.addEventListener(
-    'dblclick', getTimeRange.bind(null, today, today),
+    'dblclick', getTimeRange.bind(null, todayText, todayTimeElement, today, today),
   );
 
   weeksTimeElement = createTimeElem(weekText);
   weeksTimeElement.addEventListener(
-    'dblclick', getTimeRange.bind(null, weekStart, today),
+    'dblclick', getTimeRange.bind(null, weekText, weeksTimeElement, weekStart, today),
   );
 
   container.appendChild(todayTimeElement);
