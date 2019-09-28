@@ -1,14 +1,12 @@
 (function main() {
-  // const userId = ''; // FIXME: Fill in correct user ID
-  // let apiUrl = '';   // FIXME: Fill in correct API URL
+  const userId = ''; // FIXME: Fill in correct user ID
+  const apiUrl = ''; // FIXME: Fill in correct API URL
   const container = document.createElement('DIV');
-  const today = Date.now();
   const dayInMilliSeconds = 86400000;
+  const today = Date.now();
   const weekStart = today - (dayInMilliSeconds * new Date().getDay());
-  const todayText = 'Today: ';
-  const weekText = 'Week: ';
   let todayTimeElement = null;
-  let weeksTimeElement = null;
+  let weekTimeElement = null;
 
   function formatDate(date) {
     const d = new Date(date);
@@ -22,38 +20,37 @@
     return [year, month, day].join('');
   }
 
-  function combineTimes(data) {
-    let combinedTimes = 0;
-    let times = [];
+  function getTimeByRange(start, end) {
+    return new Promise((resolve, reject) => {
+      const xhttp = new XMLHttpRequest();
+      const url = `${apiUrl}?page=1&pageSize=100&getTotals=true&projectId=`
+        + `&companyId=0&userId=${userId}&invoicedType=all&billableType=all`
+        + `&fromDate=${formatDate(start)}&toDate=${formatDate(end)}`
+        + '&sortBy=date&sortOrder=desc&onlyStarredProjects=false'
+        + '&includeArchivedProjects=false&matchAllTags=true&projectStatus=all';
 
-    times = JSON.parse(data).timeEntries;
-    combinedTimes = times.reduce((start, obj) => start + obj.hours + (obj.minutes / 60), 0);
-    return Math.floor(combinedTimes * 100) / 100;
+      function handleResponse() {
+        let combinedTimes = 0;
+
+        if (this.readyState === 4 && this.status === 200) {
+          combinedTimes = JSON.parse(this.response).timeEntries
+            .reduce((acc, obj) => acc + obj.hours + (obj.minutes / 60), 0);
+          resolve(Math.floor(combinedTimes * 100) / 100);
+        }
+
+        if (this.status === 404) {
+          reject(new Error('not found'));
+        }
+      }
+
+      xhttp.open('GET', url, true);
+      xhttp.onreadystatechange = handleResponse;
+      xhttp.send();
+    });
   }
 
-  function handleResponse(target, text) {
-    const element = target;
-
-    if (this.readyState === 4 && this.status === 200) {
-      element.innerHTML = text + combineTimes(this.response);
-    }
-  }
-
-  function getTimeRange(text, element, dateFrom, dateTo) {
-    const xhttp = new XMLHttpRequest();
-    const url = `${apiUrl}?page=1&pageSize=100&getTotals=true&projectId=`
-      + `&companyId=0&userId=${userId}&invoicedType=all&billableType=all`
-      + `&fromDate=${formatDate(dateFrom)}&toDate=${formatDate(dateTo)}`
-      + '&sortBy=date&sortOrder=desc&onlyStarredProjects=false'
-      + '&includeArchivedProjects=false&matchAllTags=true&projectStatus=all';
-    xhttp.open('GET', url, true);
-    xhttp.onreadystatechange = handleResponse.bind(xhttp, element, text);
-    xhttp.send();
-  }
-
-  function createTimeElem(formattedText) {
+  function createTimeElem(className, timeLabel) {
     const element = document.createElement('DIV');
-    const txt = formattedText.trim().toLowerCase().replace(':', '').toString();
     element.style.display = 'inline-block';
     element.style.color = '#DC7391';
     element.style.backgroundColor = '#B4526E';
@@ -61,10 +58,25 @@
     element.style.padding = '0px 5px';
     element.style.margin = '0px 5px';
     element.style.cursor = 'pointer';
-    element.classList.add(`time-combined--${txt}`);
+    element.classList.add(`time-combined--${className}`);
     element.title = 'Double click to reload the data';
+    element.dataset.label = timeLabel;
     return element;
   }
+
+  async function refreshTime(start, end) {
+    this.innerHTML = this.dataset.label + await getTimeByRange(start, end);
+  }
+
+  todayTimeElement = createTimeElem('today', 'Today: ');
+  todayTimeElement.addEventListener('dblclick', () => {
+    refreshTime.call(this, today, today);
+  });
+
+  weekTimeElement = createTimeElem('week', 'Week: ');
+  weekTimeElement.addEventListener('dblclick', () => {
+    refreshTime.call(this, weekStart, today);
+  });
 
   container.style.top = '80px';
   container.style.left = '50%';
@@ -72,22 +84,12 @@
   container.style.position = 'absolute';
   container.classList.add('time-container');
   container.style.transform = 'translateX(-50%)';
+  container.appendChild(todayTimeElement);
+  container.appendChild(weekTimeElement);
   document.body.appendChild(container);
 
-  todayTimeElement = createTimeElem(todayText);
-  todayTimeElement.addEventListener(
-    'dblclick', getTimeRange.bind(null, todayText, todayTimeElement, today, today),
-  );
-
-  weeksTimeElement = createTimeElem(weekText);
-  weeksTimeElement.addEventListener(
-    'dblclick', getTimeRange.bind(null, weekText, weeksTimeElement, weekStart, today),
-  );
-
-  container.appendChild(todayTimeElement);
-  container.appendChild(weeksTimeElement);
-  getTimeRange(todayText, todayTimeElement, today, today);
+  refreshTime.call(todayTimeElement, today, today);
   setTimeout(() => {
-    getTimeRange(weekText, weeksTimeElement, weekStart, today);
-  }, 1000);
+    refreshTime.call(weekTimeElement, weekStart, today);
+  }, 400);
 }());
