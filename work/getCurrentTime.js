@@ -1,7 +1,6 @@
 (function main() {
   const userId = ''; // FIXME: Fill in correct user ID
   const apiUrl = ''; // FIXME: Fill in correct API URL
-  const container = document.createElement('DIV');
   const dayInMilliSeconds = 86400000;
   const today = Date.now();
   const weekStart = today - (dayInMilliSeconds * new Date().getDay());
@@ -76,18 +75,21 @@
     return element;
   }
 
+  function createContainer(children) {
+    const element = document.createElement('DIV');
+    element.style.top = '80px';
+    element.style.left = '50%';
+    element.style.zIndex = 1000;
+    element.style.position = 'absolute';
+    element.classList.add('time-container');
+    element.style.transform = 'translateX(-50%)';
+    children.forEach((child) => element.appendChild(child));
+    document.body.appendChild(element);
+  }
+
   todayTimeElement = createTimeElem('today', 'Today: ', today, today);
   weekTimeElement = createTimeElem('week', 'Week: ', weekStart, today);
-
-  container.style.top = '80px';
-  container.style.left = '50%';
-  container.style.zIndex = 1000;
-  container.style.position = 'absolute';
-  container.classList.add('time-container');
-  container.style.transform = 'translateX(-50%)';
-  container.appendChild(todayTimeElement);
-  container.appendChild(weekTimeElement);
-  document.body.appendChild(container);
+  createContainer([todayTimeElement, weekTimeElement]);
 
   /* Don't send API calls at the same time, server might ignore API
    * calls that were sent too close to each other.
