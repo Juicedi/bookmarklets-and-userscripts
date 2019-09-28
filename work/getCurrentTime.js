@@ -25,8 +25,9 @@
       const xhttp = new XMLHttpRequest();
       const url = `${apiUrl}?page=1&pageSize=100&getTotals=true&projectId=`
         + `&companyId=0&userId=${userId}&invoicedType=all&billableType=all`
-        + `&fromDate=${formatDate(start)}&toDate=${formatDate(end)}`
-        + '&sortBy=date&sortOrder=desc&onlyStarredProjects=false'
+        + `&fromDate=${formatDate(start)}`
+        + `&toDate=${formatDate(end)}&sortBy=date`
+        + '&sortOrder=desc&onlyStarredProjects=false'
         + '&includeArchivedProjects=false&matchAllTags=true&projectStatus=all';
 
       function handleResponse() {
@@ -49,7 +50,15 @@
     });
   }
 
-  function createTimeElem(className, timeLabel) {
+  async function refreshTime() {
+    this.innerHTML = this.dataset.label
+      + await getTimeByRange(
+        parseInt(this.dataset.start, 10),
+        parseInt(this.dataset.end, 10),
+      );
+  }
+
+  function createTimeElem(className, timeLabel, start, end) {
     const element = document.createElement('DIV');
     element.style.display = 'inline-block';
     element.style.color = '#DC7391';
@@ -61,22 +70,14 @@
     element.classList.add(`time-combined--${className}`);
     element.title = 'Double click to reload the data';
     element.dataset.label = timeLabel;
+    element.dataset.start = start;
+    element.dataset.end = end;
+    element.addEventListener('dblclick', refreshTime);
     return element;
   }
 
-  async function refreshTime(start, end) {
-    this.innerHTML = this.dataset.label + await getTimeByRange(start, end);
-  }
-
-  todayTimeElement = createTimeElem('today', 'Today: ');
-  todayTimeElement.addEventListener('dblclick', () => {
-    refreshTime.call(this, today, today);
-  });
-
-  weekTimeElement = createTimeElem('week', 'Week: ');
-  weekTimeElement.addEventListener('dblclick', () => {
-    refreshTime.call(this, weekStart, today);
-  });
+  todayTimeElement = createTimeElem('today', 'Today: ', today, today);
+  weekTimeElement = createTimeElem('week', 'Week: ', weekStart, today);
 
   container.style.top = '80px';
   container.style.left = '50%';
@@ -88,8 +89,9 @@
   container.appendChild(weekTimeElement);
   document.body.appendChild(container);
 
-  refreshTime.call(todayTimeElement, today, today);
-  setTimeout(() => {
-    refreshTime.call(weekTimeElement, weekStart, today);
-  }, 400);
+  /* Don't send API calls at the same time, server might ignore API
+   * calls that were sent too close to each other.
+   */
+  setTimeout(refreshTime.bind(weekTimeElement), 400);
+  refreshTime.call(todayTimeElement);
 }());
